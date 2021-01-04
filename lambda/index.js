@@ -3,31 +3,78 @@
 // session persistence, api calls, and more.
 const Alexa = require('ask-sdk-core');
 
+function fizzBuzzGame(val){
+    let val;
+    if (val % 15 === 0){
+        val = "Fizz Buzz"
+    } else if (val % 3 === 0){
+        val = "Fizz"
+    } else if (val % 5 === 0){
+        val = "Buzz"
+    } else {
+        val = `${val}`;
+    }
+    return val;
+}
+
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
-        const speakOutput = 'Welcome, you can say Hello or Help. Which would you like to try?';
+        const speakOutput = 'Welcome to Fizz Buzz. We’ll each take turns counting up from one. However, you must replace numbers divisible by 3 with the word “fizz” and you must replace numbers divisible by 5 with the word “buzz”. If a number is divisible by both 3 and 5, you should instead say “fizz buzz”. If you get one wrong, you lose.'';
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)
             .getResponse();
     }
 };
-const HelloWorldIntentHandler = {
-    canHandle(handlerInput) {
+
+const PlayIntentHandler = {
+    canHandle(handlerInput){
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
+        && Alexa.getIntentName(handlerInput.requestEnvelope) === 'PlayIntent';
     },
-    handle(handlerInput) {
-        const speakOutput = 'Hello World!';
+    handle(handlerInput){
+        const speakOutput = `Ok, I will start. ${fizzBuzzGame(val)}.`;
+        val = 2
         return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-            .getResponse();
+        .speak(speakOutput)
+        .getResponse();
     }
 };
+
+const FizzBuzzIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'FizzBuzzIntent';
+    },
+    handle(handlerInput) {
+        // const speakOutput = 'OK I will start one';
+        const request = handlerInput.requestEnvelope.request;
+        const userNum = request.intent.slots.number.value;
+        const userWord = request.intent.slots.word.value;
+
+        let correctAnswer = fizzBuzzGame(val);
+     
+        // const userNum = handlerInput.resuestEnvelope.request.intent.slots.number.value;
+        if (userNum === correctAnswer || userWord === correctAnswer){
+            val += 2;
+            return handlerInput.responseBuilder
+            .speak(fizzBuzzGame(val -1))
+            .getResponse();
+        }
+        else {
+            const correctAnswer = val;
+            val = 1;
+            return  handlerInput.responseBuilder
+            .speak(`Wrong. the correct answer was ${fizzBuzzGame(correctAnswer)}`)
+            .getResponse();
+        }
+        
+    }
+};
+
 const HelpIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
