@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "change me",
+      "invocationName": "fizz buzz",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
@@ -16,16 +16,15 @@
           "samples": []
         },
         {
-          "name": "HelloWorldIntent",
-          "slots": [],
+          "name": "FizzBuzzIntent",
+          "slots": [
+            {
+              "name": "number",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
           "samples": [
-            "hello",
-            "how are you",
-            "say hi world",
-            "say hi",
-            "hi",
-            "say hello world",
-            "say hello"
+            "{number}",
           ]
         },
         {
