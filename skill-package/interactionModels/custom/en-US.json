@@ -1,39 +1,82 @@
 {
   "interactionModel": {
-    "languageModel": {
-      "invocationName": "fizz buzz",
-      "intents": [
-        {
-          "name": "AMAZON.CancelIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.HelpIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.StopIntent",
-          "samples": []
-        },
-        {
-          "name": "FizzBuzzIntent",
-          "slots": [
-            {
-              "name": "number",
-              "type": "AMAZON.NUMBER"
-            }
+      "languageModel": {
+          "invocationName": "fizz buzz",
+          "modelConfiguration": {
+              "fallbackIntentSensitivity": {
+                  "level": "LOW"
+              }
+          },
+          "intents": [
+              {
+                  "name": "AMAZON.CancelIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.HelpIntent",
+                  "samples": []
+              },
+              {
+                  "name": "AMAZON.StopIntent",
+                  "samples": []
+              },
+              {
+                  "name": "FizzBuzzIntent",
+                  "slots": [
+                      {
+                          "name": "number",
+                          "type": "AMAZON.NUMBER"
+                      },
+                      {
+                          "name": "word",
+                          "type": "word"
+                      }
+                  ],
+                  "samples": [
+                      "two",
+                      "{number}",
+                      "{word}"
+                  ]
+              },
+              {
+                  "name": "AMAZON.NavigateHomeIntent",
+                  "samples": []
+              },
+              {
+                  "name": "PlayIntent",
+                  "slots": [],
+                  "samples": [
+                      "begin",
+                      "ok I will start one"
+                  ]
+              },
+              {
+                  "name": "AMAZON.FallbackIntent",
+                  "samples": []
+              }
           ],
-          "samples": [
-            "{number}",
+          "types": [
+              {
+                  "name": "word",
+                  "values": [
+                      {
+                          "name": {
+                              "value": "fizz buzz"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "buzz"
+                          }
+                      },
+                      {
+                          "name": {
+                              "value": "fizz"
+                          }
+                      }
+                  ]
+              }
           ]
-        },
-        {
-          "name": "AMAZON.NavigateHomeIntent",
-          "samples": []
-        }
-      ],
-      "types": []
-    }
-  },
-  "version": "1"
+      }
+  }
 }
