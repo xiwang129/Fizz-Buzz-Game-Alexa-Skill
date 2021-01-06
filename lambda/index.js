@@ -91,6 +91,45 @@ const FizzBuzzIntentHandler = {
     }
 };
 
+const NavigateHomeIntentHandler = {
+    canHandle(handlerInput) {
+      const request = handlerInput.requestEnvelope.request;
+      return request.type === 'IntentRequest' && request.intent.name === 'AMAZON.NavigateHomeIntent';
+    },
+    handle(handlerInput) {
+      const request = handlerInput.requestEnvelope.request;
+      const responseBuilder = handlerInput.responseBuilder;
+      let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+  
+      let say = 'Hello from AMAZON.NavigateHomeIntent. ';
+  
+  
+      return responseBuilder
+        .speak(say)
+        .reprompt('try again, ' + say)
+        .getResponse();
+    },
+  };
+  
+  const FallbackIntentHandler = {
+    canHandle(handlerInput) {
+      const request = handlerInput.requestEnvelope.request;
+      return request.type === 'IntentRequest' && request.intent.name === 'AMAZON.FallbackIntent';
+    },
+    handle(handlerInput) {
+      const request = handlerInput.requestEnvelope.request;
+      const responseBuilder = handlerInput.responseBuilder;
+      let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+  
+      let previousSpeech = getPreviousSpeechOutput(sessionAttributes);
+  
+      return responseBuilder
+        .speak('Sorry I didnt catch what you said, ' + stripSpeak(previousSpeech.outputSpeech))
+        .reprompt(stripSpeak(previousSpeech.reprompt))
+        .getResponse();
+    },
+  };
+
 const HelpIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
