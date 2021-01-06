@@ -33,13 +33,19 @@ const LaunchRequestHandler = {
 const PlayIntentHandler = {
     canHandle(handlerInput){
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-        && Alexa.getIntentName(handlerInput.requestEnvelope) === 'PlayIntent';
+        && Alexa.getIntentName(handlerInput.requestEnvelope) === 'PlayIntent'
+        ;
     },
     handle(handlerInput){
-        const speakOutput = `Ok, I will start. ${fizzBuzzGame(val)}.`;
-        val = 2
+        // const request = handlerInput.requestEnvelope.request;
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+       
+        sessionAttributes['count'] = 1;
+      
+        const speakOutput = 'Ok, I will start. one' ;
         return handlerInput.responseBuilder
         .speak(speakOutput)
+        .reprompt(speakOutput)
         .getResponse();
     }
 };
@@ -50,25 +56,35 @@ const FizzBuzzIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'FizzBuzzIntent';
     },
     handle(handlerInput) {
-        // const speakOutput = 'OK I will start one';
+        
         const request = handlerInput.requestEnvelope.request;
-        const userNum = request.intent.slots.number.value;
-        const userWord = request.intent.slots.word.value;
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+      
+        const userNum = parseInt(Alexa.getSlotValue(handlerInput.requestEnvelope, 'number'),10);
+        const userWord = Alexa.getSlotValue(handlerInput.requestEnvelope, 'word');
 
-        let correctAnswer = fizzBuzzGame(val);
-     
-        // const userNum = handlerInput.resuestEnvelope.request.intent.slots.number.value;
+  
+        sessionAttributes['count'] = 1;
+
+        let prevVal = sessionAttributes['count'];
+        let currentVal = prevVal + 1;
+        let correctAnswer = fizzBuzzGame(currentVal);
+
+        let say = '';
+        
         if (userNum === correctAnswer || userWord === correctAnswer){
-            val += 2;
+            sesssionAttributes['count'] = currentVal + 1;
             return handlerInput.responseBuilder
-            .speak(fizzBuzzGame(val -1))
+            .speak(fizzBuzzGame(currentVal + 1))
+            .reprompt(say)
             .getResponse();
         }
         else {
-            const correctAnswer = val;
-            val = 1;
+            // const correctAnswer = val;
+            say = `Wrong. the correct answer was ${fizzBuzzGame(correctAnswer)}`;
             return  handlerInput.responseBuilder
-            .speak(`Wrong. the correct answer was ${fizzBuzzGame(correctAnswer)}`)
+            .speak(say)
+            .reprompt(say)
             .getResponse();
         }
         
