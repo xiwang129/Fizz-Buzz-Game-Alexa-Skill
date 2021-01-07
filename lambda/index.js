@@ -3,26 +3,13 @@
 // session persistence, api calls, and more.
 const Alexa = require('ask-sdk-core');
 
-function fizzBuzzGame(val){
-    let val;
-    if (val % 15 === 0){
-        val = "Fizz Buzz"
-    } else if (val % 3 === 0){
-        val = "Fizz"
-    } else if (val % 5 === 0){
-        val = "Buzz"
-    } else {
-        val = `${val}`;
-    }
-    return val;
-}
-
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
-        const speakOutput = 'Welcome to Fizz Buzz. We’ll each take turns counting up from one. However, you must replace numbers divisible by 3 with the word “fizz” and you must replace numbers divisible by 5 with the word “buzz”. If a number is divisible by both 3 and 5, you should instead say “fizz buzz”. If you get one wrong, you lose.'';
+        var introSound = '<audio src="soundbank://soundlibrary/alarms/chimes_and_bells/chimes_bells_04"/>';
+        const speakOutput = `${introSound} Welcome to Fizz Buzz. We’ll each take turns counting up from one. However, you must replace numbers divisible by 3 with the word “fizz” and you must replace numbers divisible by 5 with the word “buzz”. If a number is divisible by both 3 and 5, you should instead say “fizz buzz”. If you get one wrong, you lose. Say begin to start`;
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)
@@ -70,7 +57,7 @@ const FizzBuzzIntentHandler = {
         let currentVal = prevVal + 1;
         let correctAnswer = fizzBuzzGame(currentVal);
 
-        let say = '';
+        let speakOutput = '';
         
         if (userNum === correctAnswer || userWord === correctAnswer){
             sesssionAttributes['count'] = currentVal + 1;
@@ -81,10 +68,11 @@ const FizzBuzzIntentHandler = {
         }
         else {
             // const correctAnswer = val;
-            say = `Wrong. the correct answer was ${fizzBuzzGame(correctAnswer)}`;
+            var buzzer = '<audio src="soundbank://soundlibrary/alarms/buzzers/buzzers_02"/>';
+            let speakOutput = `${buzzer} the correct answer was ${fizzBuzzGame(correctAnswer)}. Say yes to play again or st
             return  handlerInput.responseBuilder
-            .speak(say)
-            .reprompt(say)
+            .speak(speakOutput)
+            .reprompt(speakOutput)
             .getResponse();
         }
         
@@ -220,3 +208,17 @@ exports.handler = Alexa.SkillBuilders.custom()
         ErrorHandler,
     )
     .lambda();
+
+function fizzBuzzGame(val){
+    let val;
+    if (val % 15 === 0){
+        val = "fizz buzz"
+    } else if (val % 3 === 0){
+        val = "fizz"
+    } else if (val % 5 === 0){
+        val = "buzz"
+    } else {
+        val = `${val}`;
+    }
+    return val;
+}
