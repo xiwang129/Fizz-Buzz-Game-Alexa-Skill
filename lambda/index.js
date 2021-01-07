@@ -22,7 +22,6 @@ const PlayIntentHandler = {
         ;
     },
     handle(handlerInput){
-        // const request = handlerInput.requestEnvelope.request;
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
        
         sessionAttributes['count'] = 1;
@@ -45,29 +44,24 @@ const FizzBuzzIntentHandler = {
         const request = handlerInput.requestEnvelope.request;
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
       
-        const userNum = parseInt(Alexa.getSlotValue(handlerInput.requestEnvelope, 'number'),10);
-        const userWord = Alexa.getSlotValue(handlerInput.requestEnvelope, 'word');
-
-  
-        sessionAttributes['count'] = 1;
+        const userNum = request.intent.slots.number.value;
+        const userWord = request.intent.slots.word.value;
 
         let prevVal = sessionAttributes['count'];
         let currentVal = prevVal + 1;
         let correctAnswer = fizzBuzzGame(currentVal);
 
-        let speakOutput = '';
         
         if (userNum === correctAnswer || userWord === correctAnswer){
-            sesssionAttributes['count'] = currentVal + 1;
+            sessionAttributes['count'] = currentVal + 1;
             return handlerInput.responseBuilder
             .speak(fizzBuzzGame(currentVal + 1))
-            .reprompt(say)
+            .reprompt('try again')
             .getResponse();
         }
         else {
-            // const correctAnswer = val;
             var buzzer = '<audio src="soundbank://soundlibrary/alarms/buzzers/buzzers_02"/>';
-            let speakOutput = `${buzzer} the correct answer was ${fizzBuzzGame(correctAnswer)}. Say yes to play again or st
+            let speakOutput = `${buzzer} the correct answer was ${fizzBuzzGame(correctAnswer)}. Say yes to play again or stop to quit`;
             return  handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)
@@ -84,7 +78,6 @@ const ScoreIntentHandler = {
         ;
     },
     handle(handlerInput){
-        // const request = handlerInput.requestEnvelope.request;
         const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
        
         let prevVal = sessionAttributes['count'];
@@ -115,31 +108,7 @@ const ScoreIntentHandler = {
 };
 
 
-
-
-
-
-const NavigateHomeIntentHandler = {
-    canHandle(handlerInput) {
-      const request = handlerInput.requestEnvelope.request;
-      return request.type === 'IntentRequest' && request.intent.name === 'AMAZON.NavigateHomeIntent';
-    },
-    handle(handlerInput) {
-      const request = handlerInput.requestEnvelope.request;
-      const responseBuilder = handlerInput.responseBuilder;
-      let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-  
-      let say = 'Hello from AMAZON.NavigateHomeIntent. ';
-  
-  
-      return responseBuilder
-        .speak(say)
-        .reprompt('try again, ' + say)
-        .getResponse();
-    },
-  };
-  
-  const FallbackIntentHandler = {
+    const FallbackIntentHandler = {
     canHandle(handlerInput) {
       const request = handlerInput.requestEnvelope.request;
       return request.type === 'IntentRequest' && request.intent.name === 'AMAZON.FallbackIntent';
@@ -148,15 +117,15 @@ const NavigateHomeIntentHandler = {
       const request = handlerInput.requestEnvelope.request;
       const responseBuilder = handlerInput.responseBuilder;
       let sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-  
+
       let previousSpeech = getPreviousSpeechOutput(sessionAttributes);
-  
+
       return responseBuilder
         .speak('Sorry I didnt catch what you said, ' + stripSpeak(previousSpeech.outputSpeech))
         .reprompt(stripSpeak(previousSpeech.reprompt))
         .getResponse();
     },
-  };
+    };
 
 const HelpIntentHandler = {
     canHandle(handlerInput) {
@@ -164,7 +133,7 @@ const HelpIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'You can say hello to me! How can I help?';
+        const speakOutput = 'How can I help?';
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -180,7 +149,7 @@ const CancelAndStopIntentHandler = {
                 || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
-        const speakOutput = 'Goodbye!';
+        const speakOutput = 'Thanks for playing Fizz Buzz. For another great Alexa game, check out Song Quiz! Goodbye'';
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .getResponse();
