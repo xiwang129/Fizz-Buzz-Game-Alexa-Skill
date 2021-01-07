@@ -89,14 +89,11 @@ const ScoreIntentHandler = {
       
         let speakOutput = '';
         if (score > 5){
-            speakOutput = `${scoreSound}Congrats, you achieved level 1`;
-            
+            speakOutput = `${scoreSound}Congrats, you achieved level 1`;       
         }else if (6 < score < 10){
-            speakOutput = `${scoreSound}Congrats, you achieved level 2`;
-            
+            speakOutput = `${scoreSound}Congrats, you achieved level 2`;          
         }else if (11 < score < 20){
-            speakOutput = `${scoreSound}Congrats, you achieved level 3`;
-            
+            speakOutput = `${scoreSound}Congrats, you achieved level 3`;         
         }else{
             speakOutput =`${scoreSound}You achieved the highest level!`;}
       
