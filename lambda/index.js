@@ -222,3 +222,20 @@ function fizzBuzzGame(val){
     }
     return val;
 }
+
+function stripSpeak(str) {
+  return (str.replace('<speak>', '').replace('</speak>', ''));
+}
+
+
+function getPreviousSpeechOutput(attrs) {
+
+  if (attrs.lastSpeechOutput && attrs.history.length > 1) {
+    return attrs.lastSpeechOutput;
+
+  } else {
+    return false;
+  }
+
+}
+
