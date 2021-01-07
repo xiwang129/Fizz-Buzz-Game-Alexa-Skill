@@ -1,82 +1,94 @@
 {
-  "interactionModel": {
-      "languageModel": {
-          "invocationName": "fizz buzz",
-          "modelConfiguration": {
-              "fallbackIntentSensitivity": {
-                  "level": "LOW"
-              }
-          },
-          "intents": [
-              {
-                  "name": "AMAZON.CancelIntent",
-                  "samples": []
-              },
-              {
-                  "name": "AMAZON.HelpIntent",
-                  "samples": []
-              },
-              {
-                  "name": "AMAZON.StopIntent",
-                  "samples": []
-              },
-              {
-                  "name": "FizzBuzzIntent",
-                  "slots": [
-                      {
-                          "name": "number",
-                          "type": "AMAZON.NUMBER"
-                      },
-                      {
-                          "name": "word",
-                          "type": "word"
-                      }
-                  ],
-                  "samples": [
-                      "two",
-                      "{number}",
-                      "{word}"
-                  ]
-              },
-              {
-                  "name": "AMAZON.NavigateHomeIntent",
-                  "samples": []
-              },
-              {
-                  "name": "PlayIntent",
-                  "slots": [],
-                  "samples": [
-                      "begin",
-                      "ok I will start one"
-                  ]
-              },
-              {
-                  "name": "AMAZON.FallbackIntent",
-                  "samples": []
-              }
-          ],
-          "types": [
-              {
-                  "name": "word",
-                  "values": [
-                      {
-                          "name": {
-                              "value": "fizz buzz"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "buzz"
-                          }
-                      },
-                      {
-                          "name": {
-                              "value": "fizz"
-                          }
-                      }
-                  ]
-              }
-          ]
-      }
-  }
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "fizz game",
+            "modelConfiguration": {
+                "fallbackIntentSensitivity": {
+                    "level": "LOW"
+                }
+            },
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": [
+                        "I don't want to play anymore",
+                        "pause",
+                        "stop"
+                    ]
+                },
+                {
+                    "name": "PlayIntent",
+                    "slots": [],
+                    "samples": [
+                        "yes",
+                        "let's begin",
+                        "begin"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "FizzBuzzIntent",
+                    "slots": [
+                        {
+                            "name": "number",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "word",
+                            "type": "word"
+                        }
+                    ],
+                    "samples": [
+                        "{word}",
+                        "{number}"
+                    ]
+                },
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "ScoreIntent",
+                    "slots": [],
+                    "samples": [
+                        "score",
+                        "what's my score level"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "word",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "fizz buzz"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "buzz"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "fizz"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
 }
