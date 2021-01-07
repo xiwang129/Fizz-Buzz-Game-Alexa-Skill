@@ -79,6 +79,43 @@ const FizzBuzzIntentHandler = {
     }
 };
 
+const ScoreIntentHandler = {
+    canHandle(handlerInput){
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+        && Alexa.getIntentName(handlerInput.requestEnvelope) === 'ScoreIntent'
+        ;
+    },
+    handle(handlerInput){
+        // const request = handlerInput.requestEnvelope.request;
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+       
+        let prevVal = sessionAttributes['count'];
+        let currentVal = prevVal + 1;
+        let correctAnswer = fizzBuzzGame(currentVal);
+
+        let score = fizzBuzzGame(correctAnswer);
+        var scoreSound = '<audio src="soundbank://soundlibrary/musical/amzn_sfx_trumpet_bugle_04"/>';
+      
+        let speakOutput = '';
+        if (score > 5){
+            speakOutput = `${scoreSound}Congrats, you achieved level 1`;
+            
+        }else if (6 < score < 10){
+            speakOutput = `${scoreSound}Congrats, you achieved level 2`;
+            
+        }else if (11 < score < 20){
+            speakOutput = `${scoreSound}Congrats, you achieved level 3`;
+            
+        }else{
+            speakOutput =`${scoreSound}You achieved the highest level!`;}
+      
+        return handlerInput.responseBuilder
+        .speak(speakOutput)
+        .reprompt(speakOutput)
+        .getResponse();
+    }
+};
+
 const NavigateHomeIntentHandler = {
     canHandle(handlerInput) {
       const request = handlerInput.requestEnvelope.request;
@@ -198,7 +235,9 @@ const ErrorHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
-        HelloWorldIntentHandler,
+        PlayIntentHandler,
+        ScoreIntentHandler,
+        FizzBuzzIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         SessionEndedRequestHandler,
